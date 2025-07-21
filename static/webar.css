@@ -1,0 +1,197 @@
+/* Hide the AR button by default */
+#ar-button {
+    display: none;
+}
+
+
+/* Body and HTML Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-family: sans-serif;
+    background-color: white;
+}
+
+/* Button Container at the Top */
+.button-container-top {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center; /* Align the buttons vertically */
+    gap: 10px; /* Space between buttons */
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100; /* Ensure the container stays on top */
+}
+
+/* Shared Button Styles */
+.ar-button, .copy-button, .share-button {
+    background-color: #333333;
+    color: white;
+    padding: 10px 15px; /* Padding to ensure spacing inside the button */
+    height: 43px; /* Consistent height for all buttons */
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    text-align: center;
+    cursor: pointer;
+    /*display: inline-flex; */
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s, transform 0.2s;
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+/* Activate AR Button with Pulse Animation */
+.ar-button {
+    animation: pulse 2s infinite ease-in-out;
+}
+
+/* Pulse Animation for AR Button */
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        background-color: #333333;
+    }
+    50% {
+        transform: scale(1.1);
+        background-color: #555555;
+    }
+}
+
+.ar-button:hover, .copy-button:hover, .share-button:hover {
+    background-color: #555555;
+}
+
+/* Model Viewer Styles */
+model-viewer {
+    width: 100vw;
+    height: calc(100vh - 150px); /* Leave space for the footer */
+    display: block;
+    position: relative;
+}
+
+/* Footer Styles */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 15px 0;
+    background-color: rgba(255, 255, 255, 0.6); /* Slightly translucent white */
+    backdrop-filter: blur(15px); /* Apply blur effect */
+    -webkit-backdrop-filter: blur(15px); /* Ensure compatibility with Safari */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100; /* Ensure it stays on top */
+}
+
+/* Footer Content Styles */
+.footer-content {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Space between QR code and text */
+    max-width: 800px;
+    width: 100%;
+    justify-content: center; /* Center the QR code + text unit */
+}
+
+/* QR Code Image Styles */
+.qr-code {
+    width: 100px; /* Adjust for new dimensions */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 150px; /* Limit max size on larger screens */
+    margin: 0 15px; /* Add spacing around the QR code */
+}
+
+/* Footer Text Container */
+.footer-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Individual Line Styles */
+.footer-title {
+    font-size: 28px;
+    margin: 0 0 5px 0;
+    line-height: 1.2;
+}
+
+.footer-link {
+    font-size: 16px;
+    margin: 0 0 20px 0;
+    color: blue;
+    text-decoration: underline;
+    line-height: 1.2;
+}
+
+.footer-link:hover {
+    color: darkblue;
+}
+
+.footer-line {
+    font-size: 12px;
+    margin: 0 0 5px 0;
+    line-height: 1.1;
+}
+
+.footer-copyright {
+    font-size: 12px;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.footer-tagline {
+    font-size: 16px;
+    font-style: italic;
+    margin: 0 0 10px 0;
+    color: #444;
+    line-height: 1.2;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+    .footer-content {
+        gap: 2px; /* Reduce space between QR code and text */
+    }
+
+    .qr-code {
+        width: 75px; /* Adjust for mobile */
+        max-width: 100px; /* Ensure it doesn’t get too large */
+    }
+
+    footer {
+        padding: 10px 0;
+    }
+
+    .footer-title {
+        font-size: 20px;
+        margin: 0 0 4px 0;
+        line-height: 1.1;
+    }
+
+    .footer-link {
+        font-size: 13px;
+        margin: 0px 0 20px 0;
+        line-height: 1.1;
+    }
+
+    .footer-line{
+        font-size: 8px;
+        margin: 0 0 2px 0;
+        line-height: 1.0;
+    }
+    .footer-copyright {
+        font-size: 8px;
+        margin: 0 0 2px 0;
+        line-height: 1.0;
+    }
+	
+	.footer-tagline {
+    font-size: 12px;
+	}

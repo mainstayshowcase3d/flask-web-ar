@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Download Your AR Package{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3 class="card-title mb-0">AR Package Generated Successfully!</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-success">
+                    <h5>Your Web AR experience is ready!</h5>
+                    <p>Company: <strong>{{ data.company_name }}</strong></p>
+                    <p>Product: <strong>{{ data.product_name }}</strong></p>
+                    <p>Tagline: <strong>{{ data.tagline }}</strong></p>
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Package Contents:</h5>
+                    <ul>
+                        <li>HTML file with AR functionality</li>
+                        <li>GLB model file ({{ data.glb_filename }})</li>
+                        <li>USDZ model file ({{ data.usdz_filename }})</li>
+                        <li>QR code image ({{ data.qr_image_filename }})</li>
+                    </ul>
+                </div>
+                
+                <div class="d-grid gap-2 mb-4">
+                    <a href="/download/{{ zip_path }}" class="btn btn-success btn-lg">Download Complete Package</a>
+                </div>
+                
+                <div class="alert alert-info">
+                    <h6>Next Steps:</h6>
+                    <ol>
+                        <li>Extract the ZIP file</li>
+                        <li>Upload all files to your web server</li>
+                        <li>Make sure the model-viewer scripts are accessible</li>
+                        <li>Test the AR functionality on mobile devices</li>
+                    </ol>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <a href="/" class="btn btn-primary">Generate Another AR Experience</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Web AR HTML Generator</title>
+</head>
+<body>
+  <h2>Web AR HTML Generator Form</h2>
+  <form method="POST" enctype="multipart/form-data">
+    <label>Company Name: <input name="company_name" required></label><br>
+    <label>Product Name: <input name="product_name" required></label><br>
+    <label>Tagline: <input name="tagline" required></label><br>
+    <label>Product URL: <input name="product_url" required></label><br><br>
+
+    <label>GLB File: <input type="file" name="glb_file" required></label><br>
+    <label>USDZ File: <input type="file" name="usdz_file" required></label><br>
+    <label>QR Code Image: <input type="file" name="qr_file" required></label><br><br>
+
+    <label>Min Distance: <input name="min_distance" placeholder="2m"></label><br>
+    <label>Max Distance: <input name="max_distance" placeholder="5m"></label><br>
+    <label>Camera Target: <input name="camera_target" placeholder="0m .8m 0m"></label><br>
+    <label>Camera Orbit: <input name="camera_orbit" placeholder="-35deg 75deg 5m"></label><br><br>
+
+    <label>Final URL: <input name="final_url" required></label><br><br>
+
+    <button type="submit">Generate HTML</button>
+  </form>
+</body>
+</html>
