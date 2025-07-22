@@ -283,8 +283,8 @@ def generate_html_content(data):
     </div>
 
     <!-- Model Viewer Scripts -->
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
+    <script type="module" src="./model-viewer.min.js"></script>
+    <script nomodule src="./model-viewer-legacy.js"></script>
 
     <!-- JavaScript to Detect Device and Set Camera Orbit -->
     <script>
