@@ -25,9 +25,11 @@ ALLOWED_EXTENSIONS = {'glb', 'usdz', 'png', 'jpg', 'jpeg', 'gif'}
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(GENERATED_FOLDER, exist_ok=True)
 
+
 def allowed_file(filename):
     """Check if file extension is allowed"""
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 def generate_html_content(data):
     """Generate the HTML content with user's data"""
@@ -71,8 +73,8 @@ def generate_html_content(data):
                           alt="{data['product_name']}"
                           shadow-intensity="1.5"
                           camera-controls
-                          min-camera-orbit="auto 0deg {data['min_distance']}"
-                          max-camera-orbit="auto 95deg {data['max_distance']}"
+                          min-camera-orbit="{data['min_camera_orbit']}"
+                          max-camera-orbit="{data['max_camera_orbit']}"
                           camera-target="{data['camera_target']}"
                           auto-rotate
                           loading="lazy"
@@ -120,13 +122,15 @@ def generate_html_content(data):
                 return isMobilePlatform || isiPadOS;
             }}
 
-            // Apply camera-orbit settings and show/hide AR button based on detection
+            // Apply min-camera-orbit and max-camera-orbit settings and show/hide AR button based on detection
             if (isMobileDevice()) {{
                 arButton.style.display = 'inline-flex'; // Show the button on mobile
-                modelViewer.setAttribute('camera-orbit', '{data['camera_orbit']}');
+                modelViewer.setAttribute('min-camera-orbit', '{data['min_camera_orbit']}');
+                modelViewer.setAttribute('max-camera-orbit', '{data['max_camera_orbit']}');
             }} else {{
                 arButton.style.display = 'none'; // Hide the button on desktop
-                modelViewer.setAttribute('camera-orbit', '{data['camera_orbit']}');
+                modelViewer.setAttribute('min-camera-orbit', '{data['min_camera_orbit']}');
+                modelViewer.setAttribute('max-camera-orbit', '{data['max_camera_orbit']}');
             }}
         }});
 
@@ -169,10 +173,12 @@ def generate_html_content(data):
     
     return html_template
 
+
 @app.route('/')
 def index():
     """Main form page"""
     return render_template('index.html')
+
 
 @app.route('/generate', methods=['POST'])
 def generate_ar():
@@ -185,12 +191,11 @@ def generate_ar():
         product_url = request.form.get('product_url', '').strip()
         final_url = request.form.get('final_url', '').strip()
         
-        # Camera settings with defaults
-        min_distance = request.form.get('min_distance', '2m').strip() or '2m'
-        max_distance = request.form.get('max_distance', '5m').strip() or '5m'
-        camera_target = request.form.get('camera_target', '0m .8m 0m').strip() or '0m .8m 0m'
-        camera_orbit = request.form.get('camera_orbit', '-35deg 75deg 5m').strip() or '-35deg 75deg 5m'
-        
+        # Updated camera settings with client defaults
+        min_camera_orbit = request.form.get('min_camera_orbit', 'auto 0deg 5m').strip() or 'auto 0deg 5m'
+        max_camera_orbit = request.form.get('max_camera_orbit', 'auto 95deg 21m').strip() or 'auto 95deg 21m'
+        camera_target = request.form.get('camera_target', '0m 2.15m 0m').strip() or '0m 2.15m 0m'
+
         # Validate required fields
         if not all([company_name, product_name, tagline, product_url, final_url]):
             flash('Please fill in all required fields.', 'error')
@@ -235,10 +240,9 @@ def generate_ar():
             'glb_filename': glb_filename,
             'usdz_filename': usdz_filename,
             'qr_image_filename': qr_filename,
-            'min_distance': min_distance,
-            'max_distance': max_distance,
+            'min_camera_orbit': min_camera_orbit,
+            'max_camera_orbit': max_camera_orbit,
             'camera_target': camera_target,
-            'camera_orbit': camera_orbit,
             'final_url': final_url
         }
         
@@ -266,14 +270,15 @@ def generate_ar():
         
         # Return download page with file info
         return render_template('download.html', 
-                             zip_filename=zip_filename,
-                             zip_path=zip_path,
-                             data=data,
-                             project_dir=project_dir)
+                               zip_filename=zip_filename,
+                               zip_path=zip_path,
+                               data=data,
+                               project_dir=project_dir)
     
     except Exception as e:
         flash(f'Error generating AR package: {str(e)}', 'error')
         return redirect(url_for('index'))
+
 
 @app.route('/download/<path:filename>')
 def download_file(filename):
@@ -292,6 +297,7 @@ def download_file(filename):
     except Exception as e:
         flash(f'Error downloading file: {str(e)}', 'error')
         return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     # Create templates directory and files if they don't exist
@@ -335,7 +341,7 @@ if __name__ == '__main__':
 </body>
 </html>"""
     
-    # Create index template
+    # Create index template with camera orbit inputs updated
     index_template = """{% extends "base.html" %}
 
 {% block title %}Web AR Generator - Create Your AR Experience{% endblock %}
@@ -417,23 +423,19 @@ if __name__ == '__main__':
                     
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="min_distance" class="form-label">Min Camera Distance</label>
-                            <input type="text" class="form-control" id="min_distance" name="min_distance" placeholder="2m">
+                            <label for="min_camera_orbit" class="form-label">Min Camera Orbit</label>
+                            <input type="text" class="form-control" id="min_camera_orbit" name="min_camera_orbit" placeholder="auto 0deg 5m">
                         </div>
                         <div class="col-md-6">
-                            <label for="max_distance" class="form-label">Max Camera Distance</label>
-                            <input type="text" class="form-control" id="max_distance" name="max_distance" placeholder="5m">
+                            <label for="max_camera_orbit" class="form-label">Max Camera Orbit</label>
+                            <input type="text" class="form-control" id="max_camera_orbit" name="max_camera_orbit" placeholder="auto 95deg 21m">
                         </div>
                     </div>
                     
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="camera_target" class="form-label">Camera Target</label>
-                            <input type="text" class="form-control" id="camera_target" name="camera_target" placeholder="0m .8m 0m">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="camera_orbit" class="form-label">Camera Orbit</label>
-                            <input type="text" class="form-control" id="camera_orbit" name="camera_orbit" placeholder="-35deg 75deg 5m">
+                            <input type="text" class="form-control" id="camera_target" name="camera_target" placeholder="0m 2.15m 0m">
                         </div>
                     </div>
                     
@@ -447,7 +449,7 @@ if __name__ == '__main__':
 </div>
 {% endblock %}"""
     
-    # Create download template
+    # Create download template (unchanged)
     download_template = """{% extends "base.html" %}
 
 {% block title %}Download Your AR Package{% endblock %}
@@ -499,7 +501,7 @@ if __name__ == '__main__':
     </div>
 </div>
 {% endblock %}"""
-    
+
     # Write template files with UTF-8 encoding
     with open(os.path.join(templates_dir, 'base.html'), 'w', encoding='utf-8') as f:
         f.write(base_template)

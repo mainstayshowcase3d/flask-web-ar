@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9ECC9ZLCEX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-9ECC9ZLCEX');
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MES Fire | Revolver Fill Station</title>
+
+      <link rel="stylesheet" href="webar.css">
+    <link rel="icon" type="image/png" href="MD.png?v=1.0">
+</head>
+
+<body>
+    <div class="container">
+        <div class="button-container-top">
+            <!-- Custom Activate AR Button -->
+            <button id="ar-button" class="ar-button" onclick="triggerAR()">✨ ACTIVATE AR ✨</button>
+
+            <!-- Copy Link and Share Buttons -->
+            <button class="copy-button" onclick="copyLink()">📋 Copy Link</button>
+            <button class="share-button" onclick="shareLink()">📤 Share</button>
+        </div>
+
+        <div class="model-container">
+            <!-- Model Viewer -->
+            <model-viewer id="model-viewer"
+                          src="./RevolveAir_fillStation_v23.glb"
+                          ios-src="./RevolveAir_fillStation_v23.usdz"
+                          alt="Revolver Fill Station"
+                          shadow-intensity="1.5"
+                          camera-controls
+                          min-camera-orbit="auto 0deg 5m 5m"
+                          max-camera-orbit="auto 95deg 21m 21m"
+                          camera-target="0m 2.15m 0m"
+                          auto-rotate
+                          loading="lazy"
+                          reveal="auto"
+                          ar
+                          autoplay
+                          ar-scale="fixed">
+                <button slot="ar-button" id="hidden-ar-button" style="display: none;"></button>
+            </model-viewer>
+        </div>
+
+        <!-- Footer with QR Code and Text -->
+        <footer class="footer">
+            <div class="footer-content">
+                <img src="fillstation.png" alt="QR Code" class="qr-code">
+                <div class="footer-text">
+                    <h1 class="footer-title">MES Fire | Revolver Fill Station</h1>
+                    <p class="footer-tagline">Fast, reliable SCBA cylinder refilling for high-performance teams.</p>
+                    <a href="https://www.mainstaydigital3d.com/mesfire/revolveair" target="_blank" class="footer-link">
+                        Visit MES Fire to learn more about this product.
+                    </a>
+                    <p class="footer-line">Augmented Reality only available on compatible devices.</p>
+                    <p class="footer-copyright">COPYRIGHT ©2025 MES FIRE ALL RIGHTS RESERVED.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Model Viewer Scripts -->
+    <script type="module" src="./model-viewer.min.js"></script>
+    <script nomodule src="./model-viewer-legacy.js"></script>
+
+    <!-- JavaScript to Detect Device and Set Camera Orbit -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modelViewer = document.getElementById('model-viewer');
+            const arButton = document.getElementById('ar-button');
+            const deviceStatus = document.getElementById('device-status'); // Visual indicator for device type
+
+
+            // Function to detect if the device is mobile
+            function isMobileDevice() {
+                const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+                const isMobilePlatform = /Android|iPhone|iPad|iPod/i.test(userAgent);
+                const isiPadOS = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+
+                return isMobilePlatform || isiPadOS;
+            }
+
+            // Apply camera-orbit settings and show/hide AR button based on detection
+            if (isMobileDevice()) {
+                arButton.style.display = 'inline-flex'; // Show the button on mobile
+                modelViewer.setAttribute('camera-orbit', '-35deg 75deg 21m');
+            } else {
+                arButton.style.display = 'none'; // Hide the button on desktop
+                modelViewer.setAttribute('camera-orbit', '-35deg 75deg 21m');
+            }
+        });
+
+        // Trigger AR via the hidden button in model-viewer
+        function triggerAR() {
+            const hiddenARButton = document.getElementById('hidden-ar-button');
+            hiddenARButton.click(); // Trigger the hidden AR button
+        }
+
+        // Copy link to clipboard
+        function copyLink() {
+            const preferredLink = 'https://www.mainstaydigital3d.com/mesfire/revolveair/index.html';
+            navigator.clipboard.writeText(preferredLink).then(() => {
+                alert('Link copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+
+        // Share link via Web Share API
+        function shareLink() {
+            const preferredLink = 'https://www.mainstaydigital3d.com/mesfire/revolveair/index.html';
+            if (navigator.share) {
+                navigator.share({
+                    title: 'MES Fire - Revolver Fill Station',
+                    text: 'Check out this cool product!',
+                    url: preferredLink
+                }).then(() => {
+                    console.log('Thanks for sharing!');
+                }).catch((error) => {
+                    console.error('Error sharing:', error);
+                });
+            } else {
+                alert('Sharing is not supported on this device. Please copy the link instead.');
+            }
+        }
+    </script>
+</body>
+</html>
