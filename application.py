@@ -112,6 +112,7 @@ def generate_html_content(data):
         document.addEventListener('DOMContentLoaded', () => {{
             const modelViewer = document.getElementById('model-viewer');
             const arButton = document.getElementById('ar-button');
+            const deviceStatus = document.getElementById('device-status'); // Visual indicator for device type
 
             // Function to detect if the device is mobile
             function isMobileDevice() {{
